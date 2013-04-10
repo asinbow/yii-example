@@ -15,5 +15,6 @@ Yii Example Doc
 ### Todos
 
 * Authentication with encryption
+* Integrate Bootstrap
 
 
