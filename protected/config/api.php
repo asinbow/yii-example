@@ -23,19 +23,23 @@ return array(
                 'name',
                 'email',
                 'roll_id',
+                'valid',
             ),
         ),
-    ),
-    'useradmin'=>array(
-        'roll'=>'admin',
-        'type'=>'model',
-        'model'=>'User',
         'POST'=>array(
+            'roll'=>'admin',
             'fields'=>array(
                 'name',
                 'email',
                 'roll_id',
-                'enabled',
+                'valid',
+            )
+        ),
+        'PUT'=>array(
+            'roll'=>'admin',
+            'fields'=>array(
+                'pass',
+                'valid',
             )
         )
     ),

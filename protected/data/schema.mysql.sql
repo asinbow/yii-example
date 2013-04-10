@@ -13,10 +13,10 @@ CREATE TABLE User (
     pass VARCHAR(128) NOT NULL,
     email VARCHAR(128) NOT NULL,
     roll_id INTEGER NOT NULL,
-    endabled TINYINT(1) DEFAULT 0,
+    valid TINYINT(1) DEFAULT 0,
     UNIQUE idx_name (name),
     UNIQUE idx_email (email)
 );
 
-INSERT INTO User (name, pass, email, roll_id, endabled) VALUES ('admin', 'admin', 'admin@example.com', 1, 1);
-INSERT INTO User (name, pass, email, roll_id, enabled) VALUES ('test', 'test', 'test@example.com', 2, 1);
+INSERT INTO User (name, pass, email, roll_id, valid) VALUES ('admin', 'admin', 'admin@example.com', 1, 1);
+INSERT INTO User (name, pass, email, roll_id, valid) VALUES ('test', 'test', 'test@example.com', 2, 1);

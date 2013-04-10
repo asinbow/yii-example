@@ -144,17 +144,26 @@ class ApiController extends ApiControllerBase
                     $apiSchema['model'], $id)
                 );
 
+            $changed = false;
             foreach($attrs as $field=>$value) {
-                if($record->hasAttribute($field) && in_array($field, $fields))
-                    $record->$field = $value;
-                else
-                    $this->_sendResponse(500, sprintf(
-                        'Parameter <b>%s</b> is not allowed for model <b>%s</b>',
-                        $fields, $model)
-                    );
+                if($record->hasAttribute($field))
+                {
+                    if ($record->$field==$value)
+                        continue;
+                    if (in_array($field, $fields))
+                    {
+                        $changed = true;
+                        $record->$field = $value;
+                        continue;
+                    }
+                }
+                $this->_sendResponse(500, sprintf(
+                    'Parameter <b>%s</b> is not allowed for model <b>%s</b>',
+                    $field, $apiSchema['model'])
+                );
             }
 
-            if ($record->save())
+            if (!$changed || $record->save())
                 $this->_sendResponse(200, CJSON::encode($record));
             else
             {

@@ -9,7 +9,7 @@
  * @property string $pass
  * @property string $email
  * @property integer $roll_id
- * @property integer $disabled
+ * @property integer $valid
  */
 class User extends CActiveRecord
 {
@@ -39,11 +39,11 @@ class User extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, pass, email, roll_id', 'required'),
-			array('roll_id, disabled', 'numerical', 'integerOnly'=>true),
+			array('roll_id, valid', 'numerical', 'integerOnly'=>true),
 			array('name, pass, email', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, pass, email, roll_id, disabled', 'safe', 'on'=>'search'),
+			array('id, name, pass, email, roll_id, valid', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,7 +69,7 @@ class User extends CActiveRecord
 			'pass' => 'Pass',
 			'email' => 'Email',
 			'roll_id' => 'Roll',
-			'disabled' => 'Disabled',
+			'valid' => 'Valid',
 		);
 	}
 
@@ -94,7 +94,7 @@ class User extends CActiveRecord
 
 		$criteria->compare('roll_id',$this->roll_id);
 
-		$criteria->compare('disabled',$this->disabled);
+		$criteria->compare('valid',$this->valid);
 
 		return new CActiveDataProvider('User', array(
 			'criteria'=>$criteria,

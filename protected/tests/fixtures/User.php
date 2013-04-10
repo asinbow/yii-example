@@ -7,14 +7,14 @@ return array(
 		'pass' => '',
 		'email' => '',
 		'roll_id' => '',
-		'disabled' => '',
+		'valid' => '',
 	),
 	'sample2'=>array(
 		'name' => '',
 		'pass' => '',
 		'email' => '',
 		'roll_id' => '',
-		'disabled' => '',
+		'valid' => '',
 	),
 	*/
 );
