@@ -27,7 +27,9 @@ return array(
             ),
         ),
         'POST'=>array(
-            'roll'=>'admin',
+            'roll'=>array(
+                'admin',
+            ),
             'fields'=>array(
                 'name',
                 'email',
@@ -36,7 +38,9 @@ return array(
             )
         ),
         'PUT'=>array(
-            'roll'=>'admin',
+            'roll'=>array(
+                'admin',
+            ),
             'fields'=>array(
                 'pass',
                 'valid',

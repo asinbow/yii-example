@@ -237,25 +237,43 @@ class ApiController extends ApiControllerBase
         }
     }
 
+    private function _checkRoll($rolls, $desc) {
+        $user = Yii::app()->user->getId();
+        if (!$user)
+        {
+            $this->_sendResponse(501,
+                sprintf('Error: You have to login to access API <b>%s</b>', $desc)
+            );
+        }
+
+        // check roll type
+        if ($rolls)
+        {
+            $roll = $user->getRoll();
+            if (!in_array($roll, $rolls))
+            {
+                $this->_sendResponse(501,
+                    sprintf('Error: Your roll <b>%s</b> are not in rolls <b>(%s)</b> to access API <b>%s</b>',
+                        $roll, join(',', $rolls), $desc)
+                );
+            }
+        }
+    }
+
     private function _prepareSchema($controller)
     {
         $apiSchema = self::$apiSchemas[$controller];
         if (!$apiSchema)
         {
             $this->_sendResponse(501,
-                sprintf('Error: API <b>%s</b> is not implemented', $_GET['model'])
+                sprintf('Error: API <b>%s</b> is not implemented', $apiSchema['model'])
             );
         }
 
         // check login state, default true
         if (!array_key_exists('login', $apiSchema) || $apiSchema['login'])
         {
-        }
-
-        // check roll type
-        if ($apiSchema['roll'])
-        {
-            // is_array
+            $this->_checkRoll($apiSchema['roll'], $apiSchema['model']);
         }
 
         return $apiSchema;
@@ -269,6 +287,10 @@ class ApiController extends ApiControllerBase
                 sprintf('Error: METHOD <b>%s</b> not available on %s <b>%s</b>',
                     $name, $apiSchema['type'], $apiSchema['model'])
             );
+        }
+        $rolls = $method['roll'];
+        if ($rolls) {
+            $this->_checkRoll($rolls, $apiSchema['model'] . '.' . $name);
         }
         return $method;
     }

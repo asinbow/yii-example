@@ -16,6 +16,7 @@ class ApiTest extends RestApiBase
     {
         return array(
             'name'=>'admin',
+            //'name'=> Yii::app()->user->getId(),
         );
     }
 }

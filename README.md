@@ -1,7 +1,7 @@
 Yii Example Doc
 ---
 
-Integration
+### Integration
 
 * Backend
   * [yii](http://www.yiiframework.com/) framework
@@ -9,6 +9,11 @@ Integration
 
 * Frontend
   * [jQeury](http://jquery.com/)
-  * [Bootstrap](http://twitter.github.io/bootstrap/)
   * [Backbone](http://backbonejs.org/)
+  * [Bootstrap](http://twitter.github.io/bootstrap/)
+
+### Todos
+
+* Authentication with encryption
+
 

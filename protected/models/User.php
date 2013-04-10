@@ -100,4 +100,21 @@ class User extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+    private $roll;
+    public function getRoll()
+    {
+        if ($this->roll)
+            return $this->roll;
+
+        if (!$this->id)
+            return null;
+
+        $roll = Roll::model()->findByPk($this->id);
+        if (!$roll)
+            return null;
+
+        $this->roll = $roll->name;
+        return $this->roll;
+    }
 }
