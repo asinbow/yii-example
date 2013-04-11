@@ -1,3 +1,4 @@
 *.swp
 *.log
 /protected/runtime/*.bin
+/assets/
