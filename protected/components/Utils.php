@@ -10,5 +10,9 @@ class Utils
         $args[0] = Yii::t('default', $args[0]);
         return call_user_func_array('sprintf', $args);
     }
+
+    static function getUser() {
+        return Yii::app()->user->getId();
+    }
 }
 

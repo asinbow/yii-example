@@ -205,7 +205,7 @@ class ApiController extends ApiControllerBase
     }
 
     private function _checkRoll($rolls, $desc) {
-        $user = Yii::app()->user->getId();
+        $user = Utils::getUser();
         if (!$user)
         {
             $this->_sendResponse(401, Utils::i18n('error:need_login', $desc));

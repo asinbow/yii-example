@@ -1,6 +1,6 @@
 (function () {
 
-    var apiPrefix = 'dynamic.php/api';
+    var apiPrefix = 'index.php/api';
 
     var User = Backbone.Model.extend({
     });
@@ -38,7 +38,7 @@
             'keydown #new-user': 'testReturn'
         },
         initialize: function () {
-            $(document.body).append(this.el);
+            $('#content').append(this.el);
             $(this.el).html(this.template);
             _.bindAll(this, 'addUser', 'render');
             this.users = new Users;
