@@ -6,6 +6,8 @@
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
+    'language'=>'en',
+    //'language'=>'zh_cn',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'My Web Application',
 
@@ -52,6 +54,18 @@ return array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
+        'viewRenderer'=>array(
+            'class'=>'application.extensions.ESmartyViewRenderer',
+            'fileExtension' => '.tpl',
+            //'pluginsDir' => 'application.smartyPlugins',
+            //'configDir' => 'application.smartyConfig',
+            //'prefilters' => array(array('MyClass','filterMethod')),
+            //'postfilters' => array(),
+            //'config'=>array(
+            //    'force_compile' => YII_DEBUG,
+            //   ... any Smarty object parameter
+            //)
+        ),
 		'db'=>array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
 		),

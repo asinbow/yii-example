@@ -33,8 +33,8 @@ class ApiController extends ApiControllerBase
             $this->_sendResponse(200, CJSON::encode($items));
             break;
         default:
-            $this->_sendResponse(501,
-                sprintf('Error: REST API <b>%s</b> is not implemented', $_GET['controller'])
+            $this->_sendResponse(501, Utils::i18n(
+                'misconf:controller_unknown_type', $controller, $apiSchema['type'])
             );
         }
     }
@@ -65,8 +65,8 @@ class ApiController extends ApiControllerBase
             $this->_sendResponse(200, CJSON::encode($item));
             break;
         default:
-            $this->_sendResponse(501,
-                sprintf('Error: REST API <b>%s</b> is not implemented', $_GET['controller'])
+            $this->_sendResponse(501, Utils::i18n(
+                'misconf:controller_unknown_type', $controller, $apiSchema['type'])
             );
         }
     }
@@ -86,27 +86,15 @@ class ApiController extends ApiControllerBase
                 if($record->hasAttribute($field) && in_array($field, $fields))
                     $record->$field = $value;
                 else
-                    $this->_sendResponse(500, sprintf(
-                        'Parameter <b>%s</b> is not allowed for model <b>%s</b>',
-                        $fields, $model)
+                    $this->_sendResponse(403, Utils::i18n(
+                        'error:model_parameter_not_allow', $model, $field)
                     );
             }
             if ($record->save())
                 $this->_sendResponse(200, CJSON::encode($record));
             else
             {
-                $msg = "<h1>Error</h1>";
-                $msg .= sprintf("Couldn't create model <b>%s</b>", $model);
-                $msg .= "<ul>";
-                foreach($record->errors as $attribute=>$attr_errors) {
-                    $msg .= "<li>Attribute: $attribute</li>";
-                    $msg .= "<ul>";
-                    foreach($attr_errors as $attr_error)
-                        $msg .= "<li>$attr_error</li>";
-                    $msg .= "</ul>";
-                }
-                $msg .= "</ul>";
-                $this->_sendResponse(500, $msg );
+                $this->_sendResponse(500, Utils::i18n('error:model_db_action', $model, 'create'));
             }
             break;
         case 'class':
@@ -117,8 +105,8 @@ class ApiController extends ApiControllerBase
             $this->_sendResponse(200, CJSON::encode($item));
             break;
         default:
-            $this->_sendResponse(501,
-                sprintf('Error: REST API <b>%s</b> is not implemented', $_GET['controller'])
+            $this->_sendResponse(501, Utils::i18n(
+                'misconf:controller_unknown_type', $controller, $apiSchema['type'])
             );
         }
     }
@@ -139,10 +127,7 @@ class ApiController extends ApiControllerBase
             $model = self::_getModel($apiSchema['model']);
             $record = $model->findByPk($id);
             if(!$record)
-                $this->_sendResponse(400, 
-                    sprintf("Error: Didn't find any model <b>%s</b> with ID <b>%s</b>.",
-                    $apiSchema['model'], $id)
-                );
+                $this->_sendResponse(400, Utils::i18n('error:record_not_exists', $model, $id));
 
             $changed = false;
             foreach($attrs as $field=>$value) {
@@ -157,9 +142,8 @@ class ApiController extends ApiControllerBase
                         continue;
                     }
                 }
-                $this->_sendResponse(500, sprintf(
-                    'Parameter <b>%s</b> is not allowed for model <b>%s</b>',
-                    $field, $apiSchema['model'])
+                $this->_sendResponse(403, Utils::i18n(
+                    'error:model_parameter_not_allow', $apiSchema['model'], $field)
                 );
             }
 
@@ -167,18 +151,7 @@ class ApiController extends ApiControllerBase
                 $this->_sendResponse(200, CJSON::encode($record));
             else
             {
-                $msg = "<h1>Error</h1>";
-                $msg .= sprintf("Couldn't update model <b>%s</b>", $apiSchema['model']);
-                $msg .= "<ul>";
-                foreach($record->errors as $attribute=>$attr_errors) {
-                    $msg .= "<li>Attribute: $attribute</li>";
-                    $msg .= "<ul>";
-                    foreach($attr_errors as $attr_error)
-                        $msg .= "<li>$attr_error</li>";
-                    $msg .= "</ul>";
-                }
-                $msg .= "</ul>";
-                $this->_sendResponse(500, $msg );
+                $this->_sendResponse(500, Utils::i18n('error:model_db_action', $apiSchema['model'], 'update'));
             }
             break;
         case 'class':
@@ -189,8 +162,8 @@ class ApiController extends ApiControllerBase
             $this->_sendResponse(200, CJSON::encode($item));
             break;
         default:
-            $this->_sendResponse(501,
-                sprintf('Error: REST API <b>%s</b> is not implemented', $_GET['controller'])
+            $this->_sendResponse(500, Utils::i18n(
+                'misconf:controller_unknown_type', $controller, $apiSchema['type'])
             );
         }
     }
@@ -209,19 +182,13 @@ class ApiController extends ApiControllerBase
             $model = self::_getModel($apiSchema['model']);
             $record = $model->findByPk($id);
             if(!$record)
-                $this->_sendResponse(400, 
-                    sprintf("Error: Didn't find any model <b>%s</b> with ID <b>%s</b>.",
-                    $apiSchema['model'], $id)
-                );
+                $this->_sendResponse(400, Utils::i18n('error:record_not_exists', $apiSchema['model'], $id));
 
             $num = $record->delete();
             if ($num>0)
                 $this->_sendResponse(200, $num);
             else
-                $this->_sendResponse(500, 
-                    sprintf("Error: Couldn't delete model <b>%s</b> with ID <b>%s</b>.",
-                    $apiSchema['model'], $id)
-                );
+                $this->_sendResponse(500, Utils::i18n('error:model_db_action', $apiSchema['model'], 'delete'));
             break;
         case 'class':
             $class = $apiSchema['class'];
@@ -231,8 +198,8 @@ class ApiController extends ApiControllerBase
             $this->_sendResponse(200, CJSON::encode($item));
             break;
         default:
-            $this->_sendResponse(501,
-                sprintf('Error: REST API <b>%s</b> is not implemented', $_GET['controller'])
+            $this->_sendResponse(501, Utils::i18n(
+                'misconf:controller_unknown_type', $controller, $apiSchema['type'])
             );
         }
     }
@@ -241,9 +208,12 @@ class ApiController extends ApiControllerBase
         $user = Yii::app()->user->getId();
         if (!$user)
         {
-            $this->_sendResponse(501,
-                sprintf('Error: You have to login to access API <b>%s</b>', $desc)
-            );
+            $this->_sendResponse(401, Utils::i18n('error:need_login', $desc));
+        }
+
+        if (!$user->valid)
+        {
+            $this->_sendResponse(401, Utils::i18n('error:account_not_valid', $user->name));
         }
 
         // check roll type
@@ -252,10 +222,7 @@ class ApiController extends ApiControllerBase
             $roll = $user->getRoll();
             if (!in_array($roll, $rolls))
             {
-                $this->_sendResponse(501,
-                    sprintf('Error: Your roll <b>%s</b> are not in rolls <b>(%s)</b> to access API <b>%s</b>',
-                        $roll, join(',', $rolls), $desc)
-                );
+                $this->_sendResponse(401, Utils::i18n('error:roll_has_no_privilege', $roll, join(',', $rolls), $desc));
             }
         }
     }
@@ -265,9 +232,7 @@ class ApiController extends ApiControllerBase
         $apiSchema = self::$apiSchemas[$controller];
         if (!$apiSchema)
         {
-            $this->_sendResponse(501,
-                sprintf('Error: API <b>%s</b> is not implemented', $apiSchema['model'])
-            );
+            $this->_sendResponse(501, Utils::i18n('error:api_not_implemented', $_GET['controller']));
         }
 
         // check login state, default true
@@ -283,9 +248,8 @@ class ApiController extends ApiControllerBase
     {
         $method = $apiSchema[$name];
         if (!$method) {
-            $this->_sendResponse(401, 
-                sprintf('Error: METHOD <b>%s</b> not available on %s <b>%s</b>',
-                    $name, $apiSchema['type'], $apiSchema['model'])
+            $this->_sendResponse(501, Utils::i18n(
+                'error:model_method_not_implemented', $apiSchema['model'], $name)
             );
         }
         $rolls = $method['roll'];

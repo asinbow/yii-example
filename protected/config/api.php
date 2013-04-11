@@ -1,6 +1,7 @@
 <?php
 return array(
     'test'=>array(
+        'roll'=>array('test'),
         'type'=>'class',
         'class'=>'ApiTest',
     ),
