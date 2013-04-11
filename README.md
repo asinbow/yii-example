@@ -6,6 +6,7 @@ Yii Example Doc
 * Backend
   * [yii](http://www.yiiframework.com/) framework
   * [yii-create-rest-api](http://www.yiiframework.com/wiki/175/how-to-create-a-rest-api/)
+  * [yii-smarty-integration](https://github.com/yiiext/smarty-renderer)
 
 * Frontend
   * [jQeury](http://jquery.com/)
@@ -14,7 +15,10 @@ Yii Example Doc
 
 ### Todos
 
+* PHP template to generate html
+* LESS support
 * Authentication with encryption
 * Integrate Bootstrap
+* i18n
 
 
