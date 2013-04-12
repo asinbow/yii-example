@@ -44,9 +44,13 @@ class Utils
                 $tmp_name = $file['tmp_name'];
                 if ($tmp_name && $tmp_name!='none')
                 {
-                    $result['file'] = $tmp_name;
-                    $info = pathinfo($file['name']);
-                    $result['ext'] = $info['extension'];
+                    $fname = $file['name'];
+                    $info = pathinfo($fname);
+                    $result = array(
+                        'file'=>$tmp_name,
+                        'fname'=>$fname,
+                        'ext'=>$info['extension'],
+                    );
                 }
                 else
                 {
