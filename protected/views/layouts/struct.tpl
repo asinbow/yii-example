@@ -2,9 +2,10 @@
 
 {block 'head'}
     <link rel="stylesheet" type="text/css" href="{$baseUrl}/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="{$baseUrl}/css/app.css" />
+    <link rel="stylesheet/less" type="text/css" href="{$baseUrl}/css/app.less" />
     {block 'css-ext'}
     {/block}
+    <script type="text/javascript" src="{$baseUrl}/js/less-1.3.3.min.js"></script>
     <script type="text/javascript" src="{$baseUrl}/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="{$baseUrl}/js/json2.js"></script>
     <script type="text/javascript" src="{$baseUrl}/js/underscore-min.js"></script>

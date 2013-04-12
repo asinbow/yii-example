@@ -1,7 +1,7 @@
 {extends '../layouts/struct.tpl'}
 
 {block 'css-ext'}
-    <link rel="stylesheet" type="text/css" href="{$baseUrl}/css/login.css" />
+    <link rel="stylesheet/less" type="text/css" href="{$baseUrl}/css/login.less" />
 {/block}
 
 {block 'content'}

@@ -15,10 +15,10 @@ Yii Example Doc
 
 ### Todos
 
-* PHP template to generate html
-* LESS support
+* *PHP template to generate html
+* *LESS support
+* *Integrate Bootstrap
+* *i18n
 * Authentication with encryption
-* Integrate Bootstrap
-* i18n
 
 
