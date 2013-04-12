@@ -20,4 +20,42 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
+
+
+    private $user;
+
+    /*
+     * get session user
+     *   valid: must user validation
+     */
+    public function getUser($valid = true)
+    {
+        if(!$this->user)
+        {
+           $this->user = Utils::getUser();
+        }
+        if (!$valid)
+            return $this->user;
+
+        if ($this->user && $this->user->valid)
+            return $this->user;
+
+        return null;
+    }
+
+
+    public function render($view,$data=null,$return=false)
+    {
+        $data0 = array(
+            'user'=>$this->getUser(),
+            'app'=>Yii::app(),
+        );
+
+        if (is_null($data))
+            $data = $data0;
+        else
+            $data = array_merge($data0, $data);
+
+        return parent::render($view,$data,$return);
+    }
 }

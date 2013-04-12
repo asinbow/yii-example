@@ -14,5 +14,14 @@ class Utils
     static function getUser() {
         return Yii::app()->user->getId();
     }
+
+    static function getLoginUrl($redirect) {
+        $baseUrl = Yii::app()->request->baseUrl;
+        $loginUrl = "$baseUrl/index.php/public/login";
+        if ($redirect) {
+            $loginUrl = $loginUrl . "?redirect=" . urlencode($redirect);
+        }
+        return $loginUrl;
+    }
 }
 

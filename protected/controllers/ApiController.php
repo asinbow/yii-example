@@ -205,7 +205,7 @@ class ApiController extends ApiControllerBase
     }
 
     private function _checkRoll($rolls, $desc) {
-        $user = Utils::getUser();
+        $user = $this->getUser(false);
         if (!$user)
         {
             $this->_sendResponse(401, Utils::i18n('error:need_login', $desc));

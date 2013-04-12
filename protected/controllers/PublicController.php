@@ -23,22 +23,29 @@ class PublicController extends Controller
 
 	public function actionLogin()
 	{
-		$this->render('login',array('model'=>$model));
+        
+        $redirect = Yii::app()->request->getQuery("redirect", Yii::app()->homeUrl);
+		$this->render('login',array('redirect'=>$redirect));
 	}
 
 	public function actionAuthenticate()
 	{
         $username = $_POST['username'];
         $password = $_POST['password'];
-        $identity=new UserIdentity($username, $password);
-        if($identity->authenticate())
-        {
-            echo "success";
+        $redirect = $_POST['redirect'];
+        if ($username && $password) {
+            $rememberme = $_POST['rememberme'];
+            $identity=new UserIdentity($username, $password);
+            $identity->authenticate();
+            if($identity->errorCode===UserIdentity::ERROR_NONE)
+            {
+                $duration=$rememberme ? 3600*24*30 : 0; // 30 days
+                Yii::app()->user->login($identity,$duration);
+                if (!$redirect) $redirect = Yii::app()->homeUrl;
+                $this->redirect($redirect);
+            }
         }
-        else
-        {
-            echo "failed";
-        }
+        $this->redirect(Utils::getLoginUrl($redirect));
 	}
 
 	public function actionLogout()

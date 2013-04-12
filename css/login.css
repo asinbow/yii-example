@@ -1,0 +1,21 @@
+.login-page {
+    padding-top: 80px;
+    padding-bottom: 40px;
+}
+
+.login-page .modal-header {
+    background-color: #ddd;
+    -webkit-border-radius: 6px 6px 0 0;
+    -moz-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+
+.modal {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    margin: 0 auto 20px;
+    z-index: 1;
+    max-width: 100%;
+}
