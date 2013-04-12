@@ -43,7 +43,7 @@ class ApiControllerBase extends Controller
         return $message;
     }
 
-    public function _sendResponse($status = 200, $body = '', $content_type = 'text/html')
+    public function sendResponse($status = 200, $body = '', $content_type = 'text/html')
     {
         // set the status
         $status_header = 'HTTP/1.1 ' . $status . ' ' . self::_getStatusCodeMessage($status);

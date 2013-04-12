@@ -23,17 +23,17 @@ class ApiController extends ApiControllerBase
                 }
                 $items[] = $item;
             }
-            $this->_sendResponse(200, CJSON::encode($items));
+            $this->sendResponse(200, CJSON::encode($items));
             break;
         case 'class':
             $class = $apiSchema['class'];
             include(dirname(__FILE__) . '/api/' . $class . '.php');
             $handler = new $class($this, $apiSchema);
             $items = $handler->actionList();
-            $this->_sendResponse(200, CJSON::encode($items));
+            $this->sendResponse(200, CJSON::encode($items));
             break;
         default:
-            $this->_sendResponse(501, Utils::i18n(
+            $this->sendResponse(501, Utils::i18n(
                 'misconf:controller_unknown_type', $controller, $apiSchema['type'])
             );
         }
@@ -55,24 +55,24 @@ class ApiController extends ApiControllerBase
             {
                 $item[$field] = $record->$field;
             }
-            $this->_sendResponse(200, CJSON::encode($item));
+            $this->sendResponse(200, CJSON::encode($item));
             break;
         case 'class':
             $class = $apiSchema['class'];
             include(dirname(__FILE__) . '/api/' . $class . '.php');
             $handler = new $class($this, $apiSchema);
             $item = $handler->actionView($id);
-            $this->_sendResponse(200, CJSON::encode($item));
+            $this->sendResponse(200, CJSON::encode($item));
             break;
         default:
-            $this->_sendResponse(501, Utils::i18n(
+            $this->sendResponse(501, Utils::i18n(
                 'misconf:controller_unknown_type', $controller, $apiSchema['type'])
             );
         }
     }
     public function actionCreate()
     {
-        $controller = $_POST['controller'];
+        $controller = $_GET['controller'];
         $apiSchema =  $this->_prepareSchema($controller);
         $attrs = $_POST;
         switch($apiSchema['type'])
@@ -86,15 +86,15 @@ class ApiController extends ApiControllerBase
                 if($record->hasAttribute($field) && in_array($field, $fields))
                     $record->$field = $value;
                 else
-                    $this->_sendResponse(403, Utils::i18n(
+                    $this->sendResponse(403, Utils::i18n(
                         'error:model_parameter_not_allow', $model, $field)
                     );
             }
             if ($record->save())
-                $this->_sendResponse(200, CJSON::encode($record));
+                $this->sendResponse(200, CJSON::encode($record));
             else
             {
-                $this->_sendResponse(500, Utils::i18n('error:model_db_action', $model, 'create'));
+                $this->sendResponse(500, Utils::i18n('error:model_db_action', $model, 'create'));
             }
             break;
         case 'class':
@@ -102,10 +102,10 @@ class ApiController extends ApiControllerBase
             include(dirname(__FILE__) . '/api/' . $class . '.php');
             $handler = new $class($this, $apiSchema);
             $item = $handler->actionCreate($attrs);
-            $this->_sendResponse(200, CJSON::encode($item));
+            $this->sendResponse(200, CJSON::encode($item));
             break;
         default:
-            $this->_sendResponse(501, Utils::i18n(
+            $this->sendResponse(501, Utils::i18n(
                 'misconf:controller_unknown_type', $controller, $apiSchema['type'])
             );
         }
@@ -127,7 +127,7 @@ class ApiController extends ApiControllerBase
             $model = self::_getModel($apiSchema['model']);
             $record = $model->findByPk($id);
             if(!$record)
-                $this->_sendResponse(400, Utils::i18n('error:record_not_exists', $model, $id));
+                $this->sendResponse(400, Utils::i18n('error:record_not_exists', $model, $id));
 
             $changed = false;
             foreach($attrs as $field=>$value) {
@@ -142,16 +142,16 @@ class ApiController extends ApiControllerBase
                         continue;
                     }
                 }
-                $this->_sendResponse(403, Utils::i18n(
+                $this->sendResponse(403, Utils::i18n(
                     'error:model_parameter_not_allow', $apiSchema['model'], $field)
                 );
             }
 
             if (!$changed || $record->save())
-                $this->_sendResponse(200, CJSON::encode($record));
+                $this->sendResponse(200, CJSON::encode($record));
             else
             {
-                $this->_sendResponse(500, Utils::i18n('error:model_db_action', $apiSchema['model'], 'update'));
+                $this->sendResponse(500, Utils::i18n('error:model_db_action', $apiSchema['model'], 'update'));
             }
             break;
         case 'class':
@@ -159,10 +159,10 @@ class ApiController extends ApiControllerBase
             include(dirname(__FILE__) . '/api/' . $class . '.php');
             $handler = new $class($this, $apiSchema);
             $item = $handler->actionUpdate($id, $attrs);
-            $this->_sendResponse(200, CJSON::encode($item));
+            $this->sendResponse(200, CJSON::encode($item));
             break;
         default:
-            $this->_sendResponse(500, Utils::i18n(
+            $this->sendResponse(500, Utils::i18n(
                 'misconf:controller_unknown_type', $controller, $apiSchema['type'])
             );
         }
@@ -182,23 +182,23 @@ class ApiController extends ApiControllerBase
             $model = self::_getModel($apiSchema['model']);
             $record = $model->findByPk($id);
             if(!$record)
-                $this->_sendResponse(400, Utils::i18n('error:record_not_exists', $apiSchema['model'], $id));
+                $this->sendResponse(400, Utils::i18n('error:record_not_exists', $apiSchema['model'], $id));
 
             $num = $record->delete();
             if ($num>0)
-                $this->_sendResponse(200, $num);
+                $this->sendResponse(200, $num);
             else
-                $this->_sendResponse(500, Utils::i18n('error:model_db_action', $apiSchema['model'], 'delete'));
+                $this->sendResponse(500, Utils::i18n('error:model_db_action', $apiSchema['model'], 'delete'));
             break;
         case 'class':
             $class = $apiSchema['class'];
             include(dirname(__FILE__) . '/api/' . $class . '.php');
             $handler = new $class($this, $apiSchema);
             $item = $handler->actionUpdate($id, $attrs);
-            $this->_sendResponse(200, CJSON::encode($item));
+            $this->sendResponse(200, CJSON::encode($item));
             break;
         default:
-            $this->_sendResponse(501, Utils::i18n(
+            $this->sendResponse(501, Utils::i18n(
                 'misconf:controller_unknown_type', $controller, $apiSchema['type'])
             );
         }
@@ -208,12 +208,12 @@ class ApiController extends ApiControllerBase
         $user = $this->getUser(false);
         if (!$user)
         {
-            $this->_sendResponse(401, Utils::i18n('error:need_login', $desc));
+            $this->sendResponse(401, Utils::i18n('error:need_login', $desc));
         }
 
         if (!$user->valid)
         {
-            $this->_sendResponse(401, Utils::i18n('error:account_not_valid', $user->name));
+            $this->sendResponse(401, Utils::i18n('error:account_not_valid', $user->name));
         }
 
         // check roll type
@@ -222,7 +222,7 @@ class ApiController extends ApiControllerBase
             $roll = $user->getRoll();
             if (!in_array($roll, $rolls))
             {
-                $this->_sendResponse(401, Utils::i18n('error:roll_has_no_privilege', $roll, join(',', $rolls), $desc));
+                $this->sendResponse(401, Utils::i18n('error:roll_has_no_privilege', $roll, join(',', $rolls), $desc));
             }
         }
     }
@@ -232,7 +232,7 @@ class ApiController extends ApiControllerBase
         $apiSchema = self::$apiSchemas[$controller];
         if (!$apiSchema)
         {
-            $this->_sendResponse(501, Utils::i18n('error:api_not_implemented', $_GET['controller']));
+            $this->sendResponse(501, Utils::i18n('error:api_not_implemented', $_GET['controller']));
         }
 
         // check login state, default true
@@ -248,7 +248,7 @@ class ApiController extends ApiControllerBase
     {
         $method = $apiSchema[$name];
         if (!$method) {
-            $this->_sendResponse(501, Utils::i18n(
+            $this->sendResponse(501, Utils::i18n(
                 'error:model_method_not_implemented', $apiSchema['model'], $name)
             );
         }

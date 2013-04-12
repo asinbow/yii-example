@@ -1,8 +1,8 @@
 <?php
 class RestApiBase
 {
-    private $controller;
-    private $apiSchema;
+    protected $controller;
+    protected $apiSchema;
 
     function __construct($controller, $apiSchema)
     {
@@ -37,6 +37,6 @@ class RestApiBase
 
     protected function actionNotImplemented()
     {
-        $this->controller->_sendResponse(501, 'Error: Action is not implemented');
+        $this->controller->sendResponse(501, 'Error: Action is not implemented');
     }
 }

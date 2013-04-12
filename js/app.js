@@ -1,13 +1,11 @@
 (function () {
 
-    var apiPrefix = 'index.php/api';
-
     var User = Backbone.Model.extend({
     });
 
     var Users = Backbone.Collection.extend({
         model: User,
-        url: apiPrefix + '/user/'
+        url: apiUrl + '/user/'
     });
 
     var UserRow = Backbone.View.extend({
